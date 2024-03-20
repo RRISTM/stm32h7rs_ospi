@@ -249,16 +249,31 @@ into infinite loop:
 }
 ```
 
-6. Compile all projects.
-7. Select Application project and run debug
+6. Open Bootloader project
+7. Go to main.c
+8. Go to main function 
+9. Add Cache invalidation functions
+
+```c
+  /* USER CODE BEGIN 1 */
+
+  SCB_InvalidateDCache();
+  SCB_InvalidateICache();
+  /* USER CODE END 1 */
+```
+
+This is because after reset the cache can contain invalid data. And the JumToApplication function will clen the cache and this invalid records will cause hardfault.  
+
+10. Compile all projects.
+11. Select Application project and run debug
 
 ![run debug](./img/24_03_11_425.gif)
 
-8. check that external loader is present in debugger tab
+12. check that external loader is present in debugger tab
 
-9. Go to setup tab
-10. Add Bootloader code that it will be loaded to and we will see the code
-11. Clikc OK
+13. Go to setup tab
+14. Add Bootloader code that it will be loaded to and we will see the code
+15. Clikc OK
 
 ![debug setup](./img/24_03_11_427.gif)
 
