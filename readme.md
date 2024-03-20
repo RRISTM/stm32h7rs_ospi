@@ -83,7 +83,7 @@ We will eable acess to OSPI area and allow to execute code from this area and us
 7. Cachable `ENABLE`
 8. Bufferable `ENABLE`
 
-![mpu config](./img/24_03_11_438.gif)
+![mpu config](./img/24_03_11_439.gif)
 
 ### XSPI Mode
 
