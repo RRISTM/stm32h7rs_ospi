@@ -1,52 +1,57 @@
-# STM32H7RS + OSPI example
+# STM32H7R/S bootflash MCU + OSPI example
 
-Example will show how to create a STM32H7RS project with OSPI on nucleo board. 
+The example will guide you through creating a project based on an STM32H7R/S bootflash MCU with OSPI interface.
+The bootflash MCU comes with a small embedded Flash (64KB) used primarily for the initial boot sequence with user application residing in external memory.
+OSPI (Octal Serial Peripheral Interface) utilizes eight data lines to connect an external NOR flash memory to the MCU.
+We'll be utilizing the NUCLEO-H7S3L8 board as our hardware platform.
 
 
 ## What we will create
 
-1. Bootloader to initalize OSPI and jump to our application
-2. Application simple project which will tohggle with LED and will be sored in OSPI
-3. Embedded flash loader which allow the CubeIDE(or different IDE) or STM32CubeProgrammer to programm the OSPI
+1. Bootloader: to configure necessary hardware incl. the OSPI and jump to the application in external memory
+2. External Memory Loader: to access and manage the external memory (read/write/erase)
+3. Application: a simple application firmware that toggles an LED, which will be located in the external flash memory
 
-## What we need
+## Prerequisites
 
-- CubeMX
-- CubeIDE (or different IDE)
-- STM32H7RS nucleo
+- STM32CubeMX
+- STM32CubeIDE (or a different IDE)
+- NUCLEO-H7S3L8 board
 
-## CubeMX 
+## STM32CubeMX 
 
 ### Project startup
 
-#### 1. Run CubeMX
-#### 2. Menu>File>New Project
+#### 1. Run STM32CubeMX
+#### 2. Menu>File>New Project...
 
    ![Start new project](./img/24_03_11_387.gif)
 
-#### 3. Search for STM32H7S (same as on nucleo)
+#### 3. Search for STM32H7S3L8H6 (same as on NUCLEO-H7S3L8)
 
 ![Search for STM32](./img/24_03_11_389.gif)
 
-#### 4. Start new project 
+#### 4. Start a new project 
 
-#### 5. Allow default configuration  on MPU
+#### 5. Respond to the pop-up by agreeing to apply the default configuration for the Memory Protection Unit (MPU)
 
 ![MPU default](./img/24_03_11_391.gif)
 
 
-### CubeMX configuration for STM32H7RS
+### STM32CubeMX configuration for STM32H7R/S
 
-The STM32H7RS allow for each periphery to be configured for Bootloader, Application and External loader
+In case of the STM32H7R/S series STM32CubeMX allows each peripheral to be set up for use with the Bootloader, Application, and External Memory Loader.
 
 #### Bootloader 
-Code will be put into internal FLASH. His job will be to initate OSPI and jump into it
+Its task is to initialize the system's hardware, system clock and especially the serial memory interface (OSPI) and hand over the code execution to the main application firmware in external memory.
+The bootloader code will be placed into the MCU's internal flash.
 
 #### Application 
-This is out main application. Code will be linked do OSPI area
+This is our main application firmware. Our main application's code will be linked to the OSPI memory region.
 
-#### External loader
+#### External Memory Loader
 Code which will handled the OSPI initalization and erase/programming needed why programming tools(CubeIDE, CubeProgrammer, IAR, Keil)
+During its use, the code is loaded into MCU's internal SRAM and executed from there, ensuring the internal flash content remains unchanged.
 
 ### Pinout
 
@@ -54,7 +59,7 @@ Code which will handled the OSPI initalization and erase/programming needed why 
 
 ![led setup](./img/24_03_11_393.gif)
 
-2. Right click on pin select pin reservation to Application
+2. Right-click on the pin select pin reservation to Application
   
 ![led reservation](./img/24_03_11_442.gif)
 
