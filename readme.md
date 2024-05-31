@@ -60,7 +60,7 @@ It can be used with multiple programming tools, such as STM32CubeIDE, STM32CubeP
 
 ![led setup](./img/24_03_11_393.gif)
 
-2. Right-click on the pin and select Pin Reserved -> Application
+2. Right-click on the pin and select Pin Reservation -> Application
   
 ![led reservation](./img/24_03_11_442.gif)
 
@@ -111,7 +111,7 @@ We will use XSPI1 (currently for OSPI doesn't matter)
 1. Select Memory type to `Macronix` (memory on nucleo) 
 2. Memory size to `32 MBytes`
 3. Chip Select High Time Cycle to `2`
-4. Select memory type to `Flash`
+4. Select memory type to `Flash` (??? probably removed ???)
 5. Set De;ay Hold Quarter Cycle to `Enable`
 
 ![xspi configruation](./img/24_03_11_403.gif)
