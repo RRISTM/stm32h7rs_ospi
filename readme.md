@@ -43,63 +43,64 @@ We'll be utilizing the NUCLEO-H7S3L8 board as our hardware platform.
 In case of the STM32H7R/S series STM32CubeMX allows each peripheral to be set up for use with the Bootloader, Application, and External Memory Loader.
 
 #### Bootloader 
-Its task is to initialize the system's hardware, system clock and especially the serial memory interface (OSPI) and hand over the code execution to the main application firmware in external memory.
+Its task is to initialize the system's hardware, system clock and particularly the serial memory interface (OSPI) and hand over the code execution to the main application firmware in external memory.
 The bootloader code will be placed into the MCU's internal flash.
 
 #### Application 
-This is our main application firmware. Our main application's code will be linked to the OSPI memory region.
+This is our main application firmware. Our main application's code will reside in external memory and will be linked to the OSPI memory region.
 
 #### External Memory Loader
-Code which will handled the OSPI initalization and erase/programming needed why programming tools(CubeIDE, CubeProgrammer, IAR, Keil)
+It initializes the serial memory interface (OSPI) and then enables to manage the external memory, allowing for programming, reading, and erasing of its contents. 
 During its use, the code is loaded into MCU's internal SRAM and executed from there, ensuring the internal flash content remains unchanged.
+It can be used with multiple programming tools, such as STM32CubeIDE, STM32CubeProgrammer, IAR EWARM, Keil-MDK.
 
 ### Pinout
 
-1. LED is on PD13 set it as output. 
+1. The LED is connected to PD13; configure it as an output. 
 
 ![led setup](./img/24_03_11_393.gif)
 
-2. Right-click on the pin select pin reservation to Application
+2. Right-click on the pin and select Pin Reserved -> Application
   
 ![led reservation](./img/24_03_11_442.gif)
 
-Pin reservation allow to decide which application can use the pin.
+Pin reservation allows you to specify which application has access to use the pin.
 
 ### PWR configuration
 
 1. Select RCC
-2. Set Supply source to PWR_LDO_SUPPLY (nucleo have only LDO)
+2. Set Supply source to PWR_LDO_SUPPLY (the nucleo board features only an LDO)
 
 ![rcc config](./img/24_03_11_435.gif)
 
 ### MPU confguration
 
-By default the MPU disable access to external memory, we need to enable it. 
+By default, the MPU disables access to external memory, so we need to enable it.
 
-This will be same for `CORTEX_M7_BOOT` and `CORTEX_M7_APPLI`
-We will eable acess to OSPI area and allow to execute code from this area and use core cache
+The same will apply for `CORTEX_M7_BOOT` and `CORTEX_M7_APPLI`
+We'll be able to access the OSPI memory region, allowing code to be executed from there and utilizing the core cache.
 
 1. Open `CORTEX_M7_BOOT` and `CORTEX_M7_APPLI`
 2. Region 1 `enable`
 3. Region base address `0x90000000`
 4. Region size `32MB`
-5. Access permission to `ALL ACCESS ALLOWED`
+5. Access permission to `ALL ACCESS PERMITTED`
 6. Instruction access `ENABLE`
-7. Cachable `ENABLE`
+7. Cacheable `ENABLE`
 8. Bufferable `ENABLE`
 
 ![mpu config](./img/24_03_11_439.gif)
 
 ### XSPI Mode
 
-We will use XSPI1 (currently for OSPI dosn't matter)
+We will use XSPI1 (currently for OSPI doesn't matter)
 
 1. Select XSPI1 configuration for `Bootloader` and for `External loader`
    
 ![xspi selection](./img/24_03_11_395.gif)
 
 2. Select XSPI1
-3. Select Mode to `OSPI Mode`
+3. Select Mode to `Octo SPI`
 4. Select port to `Port 2 Octo`
 5. Select Chip select override to `NCS1 - Port 2`
 
@@ -108,7 +109,7 @@ We will use XSPI1 (currently for OSPI dosn't matter)
 ### XSPI configration
 
 1. Select Memory type to `Macronix` (memory on nucleo) 
-2. Memory size to `32MB`
+2. Memory size to `32 MBytes`
 3. Chip Select High Time Cycle to `2`
 4. Select memory type to `Flash`
 5. Set De;ay Hold Quarter Cycle to `Enable`
