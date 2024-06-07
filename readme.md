@@ -111,8 +111,7 @@ We will use XSPI1 (currently for OSPI doesn't matter)
 1. Select Memory type to `Macronix` (memory on nucleo) 
 2. Memory size to `32 MBytes`
 3. Chip Select High Time Cycle to `2`
-4. Select memory type to `Flash` (??? probably removed ???)
-5. Set De;ay Hold Quarter Cycle to `Enable`
+4. Set De;ay Hold Quarter Cycle to `Enable`
 
 ![xspi configruation](./img/24_03_11_403.gif)
 
@@ -220,8 +219,8 @@ On H7RS the XSPI can run to 200MHz
 
 1. Click to `Connect`
 2. select `Option bytes`
-3. Select `User option bytes`
-4. Enable `HSLV_XSPI2`
+3. Select `User configuration 1`
+4. Enable `XSPI2_HSLV`
 
 ![cube programmer](./img/24_03_11_433.gif)
 
