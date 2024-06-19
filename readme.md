@@ -141,7 +141,8 @@ The `IO HSLV for XSPIM2` is chosen because Port 2 is utilized for XSPI1.
 
 ### EXTMEM_MANAGER - External Memory manager
 
-Is library which can automaticaly configura the external memory (xSPI) if the memory support  `SFDP` (Serial Flash Discoverable Parameter defined by JEDEC). Or the memory conected to SDMMC. 
+It's a middleware that can automatically configure the external serial memory interface (xSPI), provided that the memory supports the SFDP standard (Serial Flash Discoverable Parameters defined by JEDEC), or is connected to SDMMC.
+Utilizing SFDP-compliant memory allows the STM32 MCU to automatically detect and set up memory parameters, which ensures compatibility and simplifies integration process.
 
 1. Select the EXTMEM_MANAGER middleware for `Bootloader` and External Loader(enabled by default)
 2. Check `Activate External Memory Manager`
@@ -175,10 +176,10 @@ and memory instance is `XSPI1`
 4. Set number of sector to `8192`
 5. Set Sector size to `4096`
 
-All this taken from memory DS 
+All these parameters are taken from the memory datasheet.
 
-You can change the `loader name` to recognize it if needed
-Also `programmming/erase time` can be more tuned based on memory DS
+You can rename the `loader name` for easier recognition if necessary. 
+Additionally, the `programmming/erase time` can be further optimized according to the specifications in the memory datasheet."
 
 ![extmem_loader config](./img/24_03_11_417.gif)
 
@@ -186,7 +187,7 @@ Also `programmming/erase time` can be more tuned based on memory DS
 ### Clock Configuration
 
 1. Go to `Clock Configuration` tab
-2. We can set HCLK to 600MHz
+2. We can set HCLK to 600 MHz
    1. Set DIVM to `/16`
    2. DIVN1 to `300`
    3. Set System Clock Mux to `PLLCLK`
@@ -197,7 +198,7 @@ Also `programmming/erase time` can be more tuned based on memory DS
 
 
 
-3. Set XSPI clock to 200MHz
+3. Set XSPI clock to 200 MHz
    1. Set XSPI1 Clock mux to `PLL2S`
    2. Set DIVM2 to `/4`
    3. set DIVN2 to `50`
@@ -205,36 +206,36 @@ Also `programmming/erase time` can be more tuned based on memory DS
 
 ![xspi1 clock config](./img/24_03_11_421.gif)
 
-On H7RS the XSPI can run to 200MHz
+On the STM32H7R/S, the XSPI (the interface for connecting with external serial memory devices) is capable of operating at speeds of up to 200 MHz in DTR (Double Transfer Rate) mode.
 
 ### Project Manager
 
-1. Go to `Project Manager` tab
-2. Name your project and select location 
-3. select `ExtMemLoade Project`
-4. Select CubeIDE as Toolchain
+1. Navigate to the `Project Manager` tab
+2. Choose a name for your project and select its location 
+3. select `ExtMemLoader Project`
+4. Select STM32CubeIDE as the Toolchain
 5. Generate Project
 
 ![project configuration](./img/24_03_11_423.gif)
 
 
-### CubeProgrammer
+### STM32CubeProgrammer
 
 1. Click to `Connect`
-2. select `Option bytes`
+2. Select `Option bytes`
 3. Select `User configuration 1`
 4. Enable `XSPI2_HSLV`
 
 ![cube programmer](./img/24_03_11_433.gif)
 
-### CubeIDE
+### STM32CubeIDE
 
-1. Open CubeIDE
-2. Import Project to CubeIDE or let MX to import project for you.
-3. You should have one main project and three sub project in IDE. 
+1. Open STM32CubeIDE
+2. Import Project to STM32CubeIDE or let STM32CubeMX to import the project for you.
+3. You should have one main project and three sub projects in the workspace. 
 
 4. Open Application project and the main.c
-5. Att there code for GPIO toggling
+5. Add there the code for GPIO toggling
 
 ```c
 	  HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_13);
@@ -270,14 +271,14 @@ into infinite loop:
   /* USER CODE END 1 */
 ```
 
-This is because after reset the cache can contain invalid data. And the JumToApplication function will clen the cache and this invalid records will cause hardfault.  
+This is done because, after a reset, the cache may contain invalid data. The JumpToApplication function will clean the cache, and these invalid records could otherwise cause a hard fault.
 
 10. Compile all projects.
 11. Select Application project and run debug
 
 ![run debug](./img/24_03_11_425.gif)
 
-12. check that external loader is present in debugger tab
+12. Check that external loader is present in the debugger tab
 
 13. Go to setup tab
 14. Add Bootloader code that it will be loaded to and we will see the code
@@ -285,4 +286,4 @@ This is because after reset the cache can contain invalid data. And the JumToApp
 
 ![debug setup](./img/24_03_11_427.gif)
 
-If you are using application for debug. You will start in Hardfault. It is because the debugger start the Application directly. He not reset the device. You must click on reset to physically reset the device and allow him to jump to bootloader. And then run to applciation. 
+If you are using the application for debugging, you will encounter a HardFault exception immediately upon starting. This occurs because the debugger starts the application directly without resetting the device. To address this, you must manually click 'Reset' to physically reset the device, which allows it to jump to the bootloader, and then proceed to run the application.
