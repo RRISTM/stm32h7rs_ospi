@@ -69,7 +69,7 @@ Pin reservation allows you to specify which application has access to use the pi
 ### PWR configuration
 
 1. Select RCC
-2. Set Supply source to PWR_LDO_SUPPLY (the nucleo board features only an LDO)
+2. Set Supply Source to PWR_LDO_SUPPLY (the NUCLEO-H7S3L8 board features an LDO and does not include an SMPS)
 
 ![rcc config](./img/24_03_11_435.gif)
 
@@ -93,7 +93,7 @@ We'll be able to access the OSPI memory region, allowing code to be executed fro
 
 ### XSPI Mode
 
-We will use XSPI1 (currently for OSPI doesn't matter)
+We will utilize the XSPI1 (Extended-SPI interface for connecting with external serial memory devices)
 
 1. Select XSPI1 configuration for `Bootloader` and for `External loader`
    
@@ -108,7 +108,7 @@ We will use XSPI1 (currently for OSPI doesn't matter)
 
 ### XSPI configration
 
-1. Select Memory type to `Macronix` (memory on nucleo) 
+1. Select Memory type to `Macronix` (memory on the NUCLEO-H7S3L8 board) 
 2. Memory size to `32 MBytes`
 3. Chip Select High Time Cycle to `2`
 4. Set De;ay Hold Quarter Cycle to `Enable`
@@ -117,21 +117,25 @@ We will use XSPI1 (currently for OSPI doesn't matter)
 
 ### SBS configruation
 
-The OSPI is powered from XSP2 domain. Which is 1.8V. For this reason HSLV(high speed low voltage) feature must be used. 
+The OSPI is powered by the XSP2 domain, which operates at 1.8V. Therefore, the HSLV (High-Speed Low-Voltage) feature must be utilized.
+HSLV is a characteristic of certain I/O ports that allows them to operate at higher speeds while using lower voltage levels. 
+This feature is particularly useful for applications that require fast data transfer rates without the higher power consumption typically associated with standard voltage levels.
 
 The SBS must be still enabled in option bytes. 
-!!! Be sure that you enable it only when the domain is really low voltage. If the memory is running from 3.3V HSLV can damage the STM32.
+Ensure that you enable the HSLV (High-Speed Low-Voltage) feature only when the domain is actually operating at low voltage!!! 
+Activating HSLV while the memory is powered by 3.3V could potentially damage the STM32 MCU!
+There is no built-in hardware protection, therefore the user bears complete responsibility for ensuring that the HSLV feature is activated under the correct conditions.
 
 
 
 1. Select SBS for `Bootloader` and `External Loader`
-2. Select SBS periphery
+2. Select the SBS peripheral
 3. Activate SBS
 4. Set IO HSLV for XSPIM2 to `ENABLE`
 
 ![sbs configruation](./img/24_03_11_405.gif)
 
-The `IO HSLV for XSPIM2` is selected because we use Port 2 for XSPI1. 
+The `IO HSLV for XSPIM2` is chosen because Port 2 is utilized for XSPI1.
 
 
 
@@ -139,36 +143,35 @@ The `IO HSLV for XSPIM2` is selected because we use Port 2 for XSPI1.
 
 Is library which can automaticaly configura the external memory (xSPI) if the memory support  `SFDP` (Serial Flash Discoverable Parameter defined by JEDEC). Or the memory conected to SDMMC. 
 
-1. Select EXTMEM_MANAGER for `Bootloader` and External Loader(enabled by default)
-2. Check `Activate External Memeory Manager`
+1. Select the EXTMEM_MANAGER middleware for `Bootloader` and External Loader(enabled by default)
+2. Check `Activate External Memory Manager`
 
 ![extmem_manager mode](./img/24_03_11_407.gif)
 
 3. Go to Boot usecase tab
-4. Set `select boot code generation`
+4. Check `select boot code generation`
 
 ![extmem_manager boot usecase](./img/24_03_11_409.gif)
 
 
-We keep `execution in place` (mean code is executed directly from external memory)
-Second option Load and Run mean the code will be loaded from memory and stored in RAM(internal or external) where will be executed. 
-
+We keep the Execute in Place option, which means the code will be executed directly from external memory. 
+The alternative option, 'Load and Run,' means that the code will be transferred from external memory into RAM (either internal SRAM or another external memory) for execution.
 Memory is `Memory 1 `
 
 5. Go to Memory 1 tab
 6. Select Number of memory data line to `EXTMEM_LINK_CONFIG_8LINES`
 
-Rest keep in default Memory driver to `EXTMEM_NOR_SFDP`
-And memory instance to `XSPI1`
+For everything else retain the default settings - Memory driver is `EXTMEM_NOR_SFDP`
+and memory instance is `XSPI1`
 
 ### EXTMEM_LOADER
 
-1. select EXTMEM_LOADER
+1. Select the EXTMEM_LOADER middleware
 2. Check Activate External Memory Loader
 
 ![extmem_loader mode](./img/24_03_11_415.gif)
 
-3. select `External Memory Loader` tab
+3. Select `External Memory Loader` tab
 4. Set number of sector to `8192`
 5. Set Sector size to `4096`
 
