@@ -4,23 +4,26 @@ cubeprog=1
 # Getting the project path
 projectdir="$(dirname "$(readlink -f "$0")")"
 # Check the operating system
-os=$(uname -s)
-if [ "$os" == "Linux" ]; then
- export dest_dir=$STM32_PRG_PATH
- # Commands for Ubuntu to extract STM32_PRG_PATH from /.bashrc
-  if [[ -z "${dest_dir}" ]]; then
-  dest_dir=$(grep "^export STM32_PRG_PATH=" ~/.bashrc | cut -d'=' -f2)
-fi
-elif [ "$os" == "Windows_NT" ]; then
-  # Commands for Windows
-  export dest_dir=$STM32_PRG_PATH
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    # Commands for Linux
+    export dest_dir=$STM32_PRG_PATH
+    # Commands for Ubuntu to extract STM32_PRG_PATH from /.bashrc
+    if [[ -z "${dest_dir}" ]]; then
+        dest_dir=$(grep "^export STM32_PRG_PATH=" ~/.bashrc | cut -d'=' -f2)
+    fi
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    # Commands for macOS
+    export dest_dir=$STM32_PRG_PATH
+elif [[ "$(echo "$OS" | grep -Ei 'win(dows)?(_nt)?')" ]]; then
+    # Commands for Windows
+    export dest_dir=$STM32_PRG_PATH
 else
-  echo "Unknown operating system"
+    echo "Unknown operating system"
 fi
 # check if STM32Cubeprogrammer env variable exists or not
 if [[ -z "${dest_dir}" ]]; then
-  echo "warning :: the env variable STM32_PRG_PATH is undefined"
-  cubeprog=0
+    echo "warning :: the env variable STM32_PRG_PATH is undefined"
+    cubeprog=0
 fi
 
 dest_dir=$dest_dir/ExternalLoader

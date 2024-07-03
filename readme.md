@@ -14,7 +14,7 @@ We'll be utilizing the NUCLEO-H7S3L8 board as our hardware platform.
 
 ## Prerequisites
 
-- STM32CubeMX
+- STM32CubeMX (or STM32CubeIDE)
 - STM32CubeIDE (or a different IDE)
 - NUCLEO-H7S3L8 board
 

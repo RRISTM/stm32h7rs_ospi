@@ -76,10 +76,10 @@ int main(void)
   SCB_InvalidateICache();
   /* USER CODE END 1 */
 
-  /* MCU Configuration--------------------------------------------------------*/
-
   /* MPU Configuration--------------------------------------------------------*/
   MPU_Config();
+
+  /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
@@ -310,7 +310,7 @@ static void MPU_Config(void)
   MPU_InitStruct.BaseAddress = 0x90000000;
   MPU_InitStruct.Size = MPU_REGION_SIZE_32MB;
   MPU_InitStruct.SubRegionDisable = 0x0;
-  MPU_InitStruct.AccessPermission = MPU_REGION_PRIV_RO_URO;
+  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
   MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_ENABLE;
   MPU_InitStruct.IsShareable = MPU_ACCESS_NOT_SHAREABLE;
   MPU_InitStruct.IsCacheable = MPU_ACCESS_CACHEABLE;
